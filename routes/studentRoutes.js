@@ -28,7 +28,7 @@ const studentSchema = new mongoose.Schema({
     },
     required: true,
   },
-  address: { type: String, minlength: 5, maxlength: 255 },
+  address: { type: String, minlength: 5, maxlength: 255, required: true },
   contact: contactSchema,
   guardianInfo: { name: String, contact: contactSchema },
   isActive: { type: Boolean, default: true },
