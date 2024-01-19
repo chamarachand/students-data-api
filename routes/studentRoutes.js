@@ -6,11 +6,11 @@ const contactSchema = new mongoose.Schema({
   phone: { type: String, minlength: 10, maxlength: 15, required: true },
   email: {
     type: String,
-    unique: true,
     minlength: 5,
     maxlength: 255,
+    unique: true,
+    required: true,
   },
-  address: { type: String, minlength: 5, maxlength: 255 },
 });
 
 const studentSchema = new mongoose.Schema({
@@ -28,6 +28,7 @@ const studentSchema = new mongoose.Schema({
     },
     required: true,
   },
+  address: { type: String, minlength: 5, maxlength: 255 },
   contact: contactSchema,
   guardianInfo: contactSchema,
   isActive: { type: Boolean, default: true },
@@ -44,6 +45,9 @@ router.get("/", (req, res) => {
   res.send("Welcome to student database");
 });
 
-router.get("/students", (req, res) => {});
+router.get("/students", async (req, res) => {
+  const students = await Student.find();
+  res.send(students);
+});
 
 module.exports = router;
