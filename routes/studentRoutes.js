@@ -30,7 +30,7 @@ const studentSchema = new mongoose.Schema({
   },
   address: { type: String, minlength: 5, maxlength: 255 },
   contact: contactSchema,
-  guardianInfo: contactSchema,
+  guardianInfo: { name: String, contact: contactSchema },
   isActive: { type: Boolean, default: true },
   semFeesPaid: { type: Boolean, default: false },
   hasLibraryAccess: { type: Boolean, default: false },
