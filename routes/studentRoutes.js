@@ -37,6 +37,8 @@ const studentSchema = new mongoose.Schema({
   inClubs: { type: Boolean, default: false },
 });
 
+const Student = mongoose.model("Student", studentSchema);
+
 //Get
 router.get("/", (req, res) => {
   res.send("Welcome to student database");
