@@ -71,7 +71,7 @@ router.post("/students", async (req, res) => {
   });
 
   const schema = Joi.object({
-    studentId: Joi.integer().positive().required(),
+    studentId: Joi.number().integer().positive().required(),
     firstName: Joi.string().min(1).max(50).required(),
     lastName: Joi.string().min(1).max(50).required(),
     gender: Joi.string()
@@ -98,8 +98,13 @@ router.post("/students", async (req, res) => {
   const { error } = schema.validate(student);
 
   if (error) return res.status(400).send(error.details[0].message);
-  const newStudent = await Student.create(student);
-  res.status(201).send(newStudent);
+  try {
+    const newStudent = await Student.create(student);
+    res.status(201).send(newStudent);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Internal server error");
+  }
 });
 
 module.exports = router;
