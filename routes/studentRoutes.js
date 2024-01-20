@@ -50,4 +50,13 @@ router.get("/students", async (req, res) => {
   res.send(students);
 });
 
+router.get("students/:studentId", async (req, res) => {
+  const studentId = parseInt(req.params.studentId);
+  const student = await Student.findOne({ studentId: studentId });
+
+  if (!student)
+    return res.status(404).send("Student with the given ID not found");
+  res.send(student);
+});
+
 module.exports = router;
