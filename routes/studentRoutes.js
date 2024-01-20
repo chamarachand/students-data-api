@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const mongoose = require("mongoose");
+const { Student, validate } = require("../models/student");
 
 //Get
 router.get("/", (req, res) => {
@@ -24,7 +24,7 @@ router.get("/students/:studentId", async (req, res) => {
 //POST
 router.post("/students", async (req, res) => {
   const student = req.body;
-  const { error } = schema.validate(student);
+  const { error } = validate(student);
 
   if (error) return res.status(400).send(error.details[0].message);
   try {

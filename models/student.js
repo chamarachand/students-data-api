@@ -16,7 +16,7 @@ const studentSchema = new mongoose.Schema({
   studentId: { type: Number, unique: true, required: true },
   firstName: { type: String, minlength: 1, maxlength: 50 },
   lastName: { type: String, minlength: 1, maxlength: 50 },
-  gender: { type: String, enum: ["male", "female"] },
+  gender: { type: String, enum: ["Male", "Female"] },
   dateOfBirth: {
     type: Date,
     validate: {
@@ -52,14 +52,14 @@ function validateStudent(user) {
     studentId: Joi.number().integer().positive().required(),
     firstName: Joi.string().min(1).max(50).required(),
     lastName: Joi.string().min(1).max(50).required(),
-    gender: Joi.string()
-      .valid("male", "female")
-      .message("Gender must be either male or female")
-      .required(),
+    gender: Joi.string().valid("Male", "Female").required(),
     dateOfBirth: Joi.date()
       .max("now")
-      .message("Date of birth cannot be tody or in the future")
+      .messages({
+        "date.max": "Date of birth cannot be today or in the future",
+      })
       .required(),
+    address: Joi.string().min(5).max(255).required(),
     contact: contactSchema,
     guardianInfo: Joi.object({
       name: Joi.string().min(3).max(75).required(),
@@ -69,7 +69,7 @@ function validateStudent(user) {
     semFeesPaid: Joi.boolean(),
     hasLibraryAccess: Joi.boolean(),
     doingSports: Joi.boolean(),
-    inSports: Joi.boolean(),
+    inClubs: Joi.boolean(),
   });
 
   return schema.validate(user);
