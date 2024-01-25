@@ -82,7 +82,7 @@ router.delete("/students/:studentId", async (req, res) => {
       return res.status(404).send("The Student with the given ID not found");
     res.send(deletedStudent);
   } catch (error) {
-    res.status(500).send("Internnal server error");
+    res.status(500).send("Internal server error");
   }
 });
 
