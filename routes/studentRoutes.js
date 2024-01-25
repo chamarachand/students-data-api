@@ -58,4 +58,21 @@ router.put("/students/:studentId", async (req, res) => {
   }
 });
 
+//DELETE
+router.delete("/students/:studentId", async (req, res) => {
+  const studentId = req.params.studentId;
+
+  try {
+    const deletedStudent = await Student.findOneAndDelete(
+      { studentId: studentId },
+      { new: true }
+    );
+    if (!deletedStudent)
+      return res.send(404).send("The Student with the given ID not found");
+    res.send(deletedStudent);
+  } catch (error) {
+    res.status(500).send("Internnal server error");
+  }
+});
+
 module.exports = router;
