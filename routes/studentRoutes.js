@@ -18,7 +18,7 @@ router.get("/students/:studentId", async (req, res) => {
   if (isNaN(studentId))
     return res.status(400).send("Invalid Student ID format");
 
-  const student = await Student.findOne({ studentId: req.params.studentId });
+  const student = await Student.findOne({ studentId: studentId });
 
   if (!student)
     return res.status(404).send("Student with the given ID not found");
