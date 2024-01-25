@@ -24,14 +24,36 @@ router.get("/students/:studentId", async (req, res) => {
 //POST
 router.post("/students", async (req, res) => {
   const student = req.body;
-  const { error } = validate(student);
 
+  const { error } = validate(student);
   if (error) return res.status(400).send(error.details[0].message);
+
   try {
     const newStudent = await Student.create(student);
     res.status(201).send(newStudent);
   } catch (error) {
-    console.error(error); //
+    res.status(500).send("Internal server error");
+  }
+});
+
+//PUT
+router.put("/students/:studentId", async (req, res) => {
+  const studentId = parseInt(req.params.studentId);
+  const student = req.body;
+
+  const { error } = validate(student);
+  if (error) return res.status(400).send(error.details[0].message);
+
+  try {
+    const updatedStudent = await Student.findOneAndReplace(
+      { studentId: studentId },
+      student,
+      { new: true }
+    );
+    if (!updatedStudent)
+      return res.status(404).send("Student with the given ID not found");
+    res.send(updatedStudent);
+  } catch (error) {
     res.status(500).send("Internal server error");
   }
 });
