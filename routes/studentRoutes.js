@@ -14,7 +14,11 @@ router.get("/students", async (req, res) => {
 
 router.get("/students/:studentId", async (req, res) => {
   const studentId = parseInt(req.params.studentId);
-  const student = await Student.findOne({ studentId: studentId });
+
+  if (isNaN(studentId))
+    return res.status(400).send("Invalid Student ID format");
+
+  const student = await Student.findOne({ studentId: req.params.studentId });
 
   if (!student)
     return res.status(404).send("Student with the given ID not found");
@@ -39,6 +43,10 @@ router.post("/students", async (req, res) => {
 //PUT
 router.put("/students/:studentId", async (req, res) => {
   const studentId = parseInt(req.params.studentId);
+
+  if (isNaN(studentId))
+    return res.status(400).send("Invalid Student ID format");
+
   const student = req.body;
 
   const { error } = validate(student);
@@ -61,6 +69,9 @@ router.put("/students/:studentId", async (req, res) => {
 //DELETE
 router.delete("/students/:studentId", async (req, res) => {
   const studentId = req.params.studentId;
+
+  if (isNaN(studentId))
+    return res.status(400).send("Invalid Student ID format");
 
   try {
     const deletedStudent = await Student.findOneAndDelete(
